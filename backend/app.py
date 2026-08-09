@@ -5,6 +5,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 from db import get_connection
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # loads the .env file so we can use the db password and other settings
 load_dotenv()
@@ -12,25 +13,44 @@ app = Flask(__name__)
 # lets the react frontend talk to this backend without getting blocked
 CORS(app)
 
-# the passcode starts as whatever is in .env. changes if the user updates it
-current_passcode = os.getenv("INITIAL_PASSCODE", "0000")
-
 # checks if the passcode entered on the passcode page is correct
+# looks up the most recent hashed passcode in the settings table and compares it
 @app.route("/api/auth/verify", methods=["POST"])
 def verify_passcode():
     data = request.json
-    if data.get("passcode") == current_passcode:
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    # gets the newest passcode hash, only one should ever exist but this is a safety net
+    cursor.execute("SELECT passcode_hash FROM settings ORDER BY id DESC LIMIT 1")
+    row = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    # check_password_hash compares the typed passcode against the stored hash, never the raw value
+    if row and check_password_hash(row["passcode_hash"], data.get("passcode", "")):
         return jsonify({"success": True})
     return jsonify({"success": False, "message": "Incorrect passcode"}), 401
 
-# updates the passcode
+# updates the passcode, only works if the current passcode is entered correctly first
 @app.route("/api/auth/change", methods=["POST"])
 def change_passcode():
-    global current_passcode
     data = request.json
-    if data.get("currentPasscode") != current_passcode:
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT id, passcode_hash FROM settings ORDER BY id DESC LIMIT 1")
+    row = cursor.fetchone()
+
+    # blocks the change if there's no row yet or the current passcode doesn't match
+    if not row or not check_password_hash(row["passcode_hash"], data.get("currentPasscode", "")):
+        cursor.close()
+        conn.close()
         return jsonify({"message": "Current passcode is incorrect"}), 401
-    current_passcode = data.get("newPasscode")
+
+    # hashes the new passcode before saving it, never store it as plain text
+    new_hash = generate_password_hash(data.get("newPasscode", ""))
+    cursor.execute("UPDATE settings SET passcode_hash = %s WHERE id = %s", (new_hash, row["id"]))
+    conn.commit()
+    cursor.close()
+    conn.close()
     return jsonify({"message": "Passcode updated"})
 
 # gets every contact on the contact list page
