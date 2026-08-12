@@ -81,15 +81,18 @@ def get_contact(contact_id):
 @app.route("/api/contacts", methods=["POST"])
 def add_contact():
     data = request.json
+    # checks if name and email are present and will give an error otherwise since theyre required
     if not data.get("name") or not data.get("email"):
         return jsonify({"message": "Name and email are required"}), 400
     conn = get_connection()
     cursor = conn.cursor()
+    # adds a new contact to the database 
     cursor.execute(
         "INSERT INTO contacts (name, email, phone, address, profile_picture) VALUES (%s, %s, %s, %s, %s)",
         (data.get("name"), data.get("email"), data.get("phone"), data.get("address"), data.get("profilePicture"))
     )
     conn.commit()
+    # gets the id of the new contact from mysql so it can be sent to the frontend
     new_id = cursor.lastrowid
     cursor.close()
     conn.close()
