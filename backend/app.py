@@ -102,6 +102,9 @@ def add_contact():
 @app.route("/api/contacts/<int:contact_id>", methods=["PUT"])
 def edit_contact(contact_id):
     data = request.json
+    # checks if name and email are entered will give error if not
+    if not data.get("name") or not data.get("email"):
+        return jsonify({"message": "Name and email are required"}), 400
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute(
