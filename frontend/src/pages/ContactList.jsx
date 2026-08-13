@@ -17,6 +17,7 @@ function ContactList() {
     <div>
       <h1>Contacts</h1>
       <Link to="/contacts/add">Add Contact</Link>
+      <Link to="/settings/passcode">Change Passcode</Link>
       <ul>
         {contacts.map((contact) => (
           <li key={contact.id}>
