@@ -1,5 +1,16 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
+
+// I was able to resuse commponets from AddContacts.jsx
+
+// gets the contacts initials if there is no profile picture to show
+function getInitials(name) {
+  if (!name) return "";
+  const parts = name.trim().split(" ");
+  const first = parts[0]?.[0] || "";
+  const last = parts.length > 1 ? parts[parts.length - 1][0] : "";
+  return (first + last).toUpperCase();
+}
 
 // update contacts details
 function EditContact() {
@@ -9,7 +20,10 @@ function EditContact() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  // holds the contacts file upload filename as read only
+  const [profilePicture, setProfilePicture] = useState("")
   const [error, setError] = useState("");
+
 
   // gets the current details of the contact to pre fill the form
   useEffect(() => {
@@ -22,6 +36,7 @@ function EditContact() {
         setEmail(data.email);
         setPhone(data.phone);
         setAddress(data.address);
+        setProfilePicture(data.profile_Picture);
       });
       // will run useeffect again if the user selects another contact changing the id
   }, [id]);
@@ -48,37 +63,68 @@ function EditContact() {
     }
   };
 
-  // the edit contact form with a section for all details
+   // the edit contact form with a section for all details
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Edit Contact</h1>
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Name"
-      />
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-      />
-      <input
-        type="tel"
-        value={phone}
-        onChange={(e) => setPhone(e.target.value)}
-        placeholder="Phone"
-      />
-      <input
-        type="text"
-        value={address}
-        onChange={(e) => setAddress(e.target.value)}
-        placeholder="Address"
-      />
-      {error && <p>{error}</p>}
-      <button type="submit">Update Contact</button>
-    </form>
+    <div>
+      {/* adds the back arrow in the header, takes the user back to the contact details page */}
+      <div className="page-header">
+        <Link to={`/contacts/${id}`} className="back-arrow">‹</Link>
+        <h1>Edit Contact</h1>
+      </div>
+      <div className="card">
+        {/* shows the current profile picture, read only, cant be changed on this page */}
+        {profilePicture ? (
+          <img
+            className="detail-profile-pic"
+            src={`http://127.0.0.1:5000/uploads/${profilePicture}`}
+            alt={name}
+          />
+        ) : (
+          <span className="detail-profile-pic">{getInitials(name)}</span>
+        )}
+
+        {/* adds the form fields and sets the values */}
+        <form onSubmit={handleSubmit}>
+          <label className="input-label">Name</label>
+          <input
+            className="input-field"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+
+          <label className="input-label">Email</label>
+          <input
+            className="input-field"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <label className="input-label">Phone</label>
+          <input
+            className="input-field"
+            type="tel"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+
+          <label className="input-label">Address</label>
+          <input
+            className="input-field"
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+
+          {/* clicking update runs the const handleSubmit in the code above, then navigates the user back to the contact details page */}
+          {/* we dont have to redirect the user here since its handled in the function above*/}
+          {/* shows an error if the backend doesnt save */}
+          {error && <p className="error-text">{error}</p>}
+          <button type="submit" className="btn-primary">Update Contact</button>
+        </form>
+      </div>
+    </div>
   );
 }
 

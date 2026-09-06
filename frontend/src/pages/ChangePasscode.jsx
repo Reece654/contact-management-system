@@ -1,5 +1,5 @@
 import { useState} from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 // form for user to change their passcode
 function ChangePasscode() {
@@ -37,31 +37,51 @@ function ChangePasscode() {
     } 
   };
 
-  // change passcode form with fields for old passcode, new passcode and confirm new passcode
+  // re useble components for styling
+  // change passcode form that has current passcode, new passcode and comfirmation passcode
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Change Passcode</h1>
-      <input
-        type="password"
-        value={oldPasscode}
-        onChange={(e) => setOldPasscode(e.target.value)}
-        placeholder="Current Passcode"
-      />  
-    <input
-      type="password"
-      value={newPasscode}
-      onChange={(e) => setNewPasscode(e.target.value)}
-      placeholder="New Passcode"
-    />
-    <input
-      type="password"
-      value={confirmPasscode}
-      onChange={(e) => setConfirmPasscode(e.target.value)}
-      placeholder="Confirm New Passcode"
-    />
-    {error && <p>{error}</p>}
-    <button type="submit">Change Passcode</button>
-  </form>
+    <div>
+      {/* adds the back arrow in the header, takes the user back to the contact list */}
+      <div className="page-header">
+        <Link to="/contacts" className="back-arrow">‹</Link>
+        <h1>Change Passcode</h1>
+      </div>
+      <div className="card">
+        {/* adds the forms fields and sets the values */}
+        <form onSubmit={handleSubmit}>
+          {/* form field for Current passcode */}
+          <label className="input-label">Current Passcode</label>
+          <input
+            className="input-field"
+            type="password"
+            value={oldPasscode}
+            onChange={(e) => setOldPasscode(e.target.value)}
+          />
+
+          {/* form field for new passcode */}
+          <label className="input-label">New Passcode</label>
+          <input
+            className="input-field"
+            type="password"
+            value={newPasscode}
+            onChange={(e) => setNewPasscode(e.target.value)}
+          />
+
+          {/* form field for comfirmation passcode */}
+          <label className="input-label">Confirm New Passcode</label>
+          <input
+            className="input-field"
+            type="password"
+            value={confirmPasscode}
+            onChange={(e) => setConfirmPasscode(e.target.value)}
+          />
+
+          {/* shows an error if the passcodes dont match or the backend fails to save */}
+          {error && <p className="error-text">{error}</p>}
+          <button type="submit" className="btn-primary">Change Passcode</button>
+        </form>
+      </div>
+    </div>
   );
 }
 

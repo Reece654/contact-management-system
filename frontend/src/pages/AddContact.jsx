@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 // form for user to create a new contact
 function AddContact() {
@@ -51,44 +51,70 @@ function AddContact() {
 
   // the add contact form with a section for all details
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Add Contact</h1>
-      {/* user input details for name, email, phone and address in each section */}
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Name"
-      />
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-      />
-      <input
-        type="text"
-        value={phone}
-        onChange={(e) => setPhone(e.target.value)}
-        placeholder="Phone number"
-      />
-      <input
-        type="text"
-        value={address}
-        onChange={(e) => setAddress(e.target.value)}
-        placeholder="Address"
-      />
-      {/* file upload for the profile piscture, default image will be used if no upload */}
-      <input
-        type="file"
-        onChange={(e) => setProfilePicture(e.target.files[0])}
-      />
-      {/* clicking save runs the const handleSubmit in the code above, then navigates the user back to contacts*/}
-      {/* we dont have to redirect the user here since its handled in the function above*/}
-      {/* shows an error if the backend doesnt save */}
-      {error && <p>{error}</p>}
-      <button type="submit">Save</button>
-    </form>
+    <div>
+      {/* adds the back arrow in the header */}
+      <div className="page-header">
+        <Link to="/contacts" className="back-arrow">‹</Link>
+        <h1>Add Contact</h1>
+      </div>
+
+      {/* adds the + button for profile picture upload */}
+      <div className="card">
+        {/* clicking the circle opens the file upload */}
+        {/* adds the + profilr picture */}
+        <label className="profile-pic-upload">
+          <span className="profile-pic-upload-icon">+</span>
+          <input
+            type="file"
+            /* sets the profile picture when a file is selected */
+            onChange={(e) => setProfilePicture(e.target.files[0])}
+            style={{ display: "none" }}
+          />
+        </label>
+        <p className="profile-pic-text">Add Profile Picture</p>
+
+        {/* adds the form fields and sets the values */}
+        <form onSubmit={handleSubmit}>
+          <label className="input-label">Name</label>
+          <input
+            className="input-field"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+
+          <label className="input-label">Email</label>
+          <input
+            className="input-field"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <label className="input-label">Phone</label>
+          <input
+            className="input-field"
+            type="tel"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+
+          <label className="input-label">Address</label>
+          <input
+            className="input-field"
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+
+          {/* clicking save runs the const handleSubmit in the code above, then navigates the user back to contacts*/}
+          {/* we dont have to redirect the user here since its handled in the function above*/}
+          {/* shows an error if the backend doesnt save */}
+          {error && <p className="error-text">{error}</p>}
+          <button type="submit" className="btn-primary">Save</button>
+        </form>
+      </div>
+    </div>
   );
 }
 

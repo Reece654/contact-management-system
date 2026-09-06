@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import lockIcon from "../assets/lockicon.png";
 
 // simple passcode entry page, that checks the typed passcode against the backend
 function PasscodeEntry() {
@@ -33,17 +34,26 @@ function PasscodeEntry() {
   // the passcode input box and unlock button
   // shows an error message if one of these exists
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Enter Passcode</h1>
-      <input
-        type="password"
-        value={passcode}
-        onChange={(e) => setPasscode(e.target.value)}
-        placeholder="Passcode"
-      />
-      <button type="submit">Unlock</button>
-      {error && <p>{error}</p>}
-    </form>
+    <div>
+      <div className="page-header">
+        <h1>Contact Manager</h1>
+      </div>
+      <div className="card">
+        <img src={lockIcon} alt="LockIcon" />
+        <h2>Enter Passcode</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            className="input-field"
+            type="password"
+            value={passcode}
+            onChange={(e) => setPasscode(e.target.value)}
+            placeholder="Passcode"
+          />
+          <button className="btn-primary" type="submit">Unlock</button>
+          {error && <p className="error-text">{error}</p>}
+        </form>
+      </div>
+    </div>
   );
 }
 

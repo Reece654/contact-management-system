@@ -1,7 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 
-// shows the contacts full details with links to edit or delete it
+// gets the contacts initials if no image was uploaded
+function getInitials(name) {
+  if (!name) return "";
+  const parts = name.trim().split(" ");
+  const first = parts[0]?.[0] || "";
+  const last = parts.length > 1 ? parts[parts.length - 1][0] : "";
+  return (first + last).toUpperCase();
+}
+
+// shows the contacts full details with the links to edit or delete it
 function ContactDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -14,7 +23,7 @@ function ContactDetail() {
       .then((data) => setContact(data));
   }, [id]);
 
-  // sends a delete request to the backend then goes back to the contact list
+  // sends a delete request to the backend then takes the user back to the contact list
   const handleDelete = async () => {
     await fetch(`http://127.0.0.1:5000/api/contacts/${id}`, {
       method: "DELETE",
@@ -30,12 +39,42 @@ function ContactDetail() {
   // the contacts details and the edit and delete controls
   return (
     <div>
-      <h1>{contact.name}</h1>
-      <p>Email: {contact.email}</p>
-      <p>Phone: {contact.phone}</p>
-      <p>Address: {contact.address}</p>
-      <Link to={`/contacts/${id}/edit`}>Edit</Link>
-      <button onClick={handleDelete}>Delete</button>
+      <div className="page-header">
+        <Link to="/contacts" className="back-arrow">‹</Link>
+        <h1>Contact</h1>
+      </div>
+      <div className="card">
+        {contact.profile_picture ? (
+          <img
+            className="detail-profile-pic"
+            src={`http://127.0.0.1:5000/uploads/${contact.profile_picture}`}
+            alt={contact.name}
+          />
+        ) : (
+          <span className="detail-profile-pic">{getInitials(contact.name)}</span>
+        )}
+        <p className="detail-name">{contact.name}</p>
+
+        <div className="detail-fields">
+          <div className="detail-field">
+            <p className="detail-label">Email</p>
+            <p className="detail-value">{contact.email}</p>
+          </div>
+          <div className="detail-field">
+            <p className="detail-label">Phone</p>
+            <p className="detail-value">{contact.phone}</p>
+          </div>
+          <div className="detail-field">
+            <p className="detail-label">Address</p>
+            <p className="detail-value">{contact.address}</p>
+          </div>
+        </div>
+
+        <div className="detail-actions">
+          <Link to={`/contacts/${id}/edit`} className="btn-outline btn-outline-primary">Edit</Link>
+          <button onClick={handleDelete} className="btn-outline btn-outline-danger">Delete</button>
+        </div>
+      </div>
     </div>
   );
 }

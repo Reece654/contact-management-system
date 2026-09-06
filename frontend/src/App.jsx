@@ -1,5 +1,5 @@
 // this file sets up all the page routes for the app
-
+import './App.css';
 // brings in the router stuff so the app can switch between pages without reloading
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import PasscodeEntry from './pages/PasscodeEntry';
