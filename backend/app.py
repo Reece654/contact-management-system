@@ -8,6 +8,9 @@ import os
 from db import get_connection
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
+# allows the react frontend to talk to this backend without getting blocked by CORS policy
+from flask_cors import CORS
+CORS(app, origins=["http://contact-management-frontend.s3-website.ap-southeast-6.amazonaws.com"])
 
 # creates a upload folder for profile pictures
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "uploads")
@@ -164,4 +167,4 @@ def delete_contact(contact_id):
 
 # starts the server when you run python app.py directly
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(debug=False, port=5000)

@@ -7,7 +7,7 @@ function ContactList() {
 
   // loads all contacts from the backend when the page first opens
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/contacts")
+    fetch("http://contact-management-backend-env.eba-3desc6qg.ap-southeast-6.elasticbeanstalk.com/api/contacts")
       .then((res) => res.json())
       .then((data) => setContacts(data));
   }, []);
@@ -40,7 +40,7 @@ function ContactList() {
                 {contact.profile_picture ? (
                   <img 
                   className="profile-pic"
-                  src={`http://127.0.0.1:5000/uploads/${contact.profile_picture}`}
+                  src={`http://contact-management-backend-env.eba-3desc6qg.ap-southeast-6.elasticbeanstalk.com/uploads/${contact.profile_picture}`}
                   alt={contact.name}
                   />
                 ) : (

@@ -18,14 +18,14 @@ function ContactDetail() {
 
   // loads the contact from the backend using the id in the url
   useEffect(() => {
-    fetch(`http://127.0.0.1:5000/api/contacts/${id}`)
+    fetch(`http://contact-management-backend-env.eba-3desc6qg.ap-southeast-6.elasticbeanstalk.com/api/contacts/${id}`)
       .then((res) => res.json())
       .then((data) => setContact(data));
   }, [id]);
 
   // sends a delete request to the backend then takes the user back to the contact list
   const handleDelete = async () => {
-    await fetch(`http://127.0.0.1:5000/api/contacts/${id}`, {
+    await fetch(`http://contact-management-backend-env.eba-3desc6qg.ap-southeast-6.elasticbeanstalk.com/api/contacts/${id}`, {
       method: "DELETE",
     });
     navigate("/contacts");
@@ -47,7 +47,7 @@ function ContactDetail() {
         {contact.profile_picture ? (
           <img
             className="detail-profile-pic"
-            src={`http://127.0.0.1:5000/uploads/${contact.profile_picture}`}
+            src={`http://contact-management-backend-env.eba-3desc6qg.ap-southeast-6.elasticbeanstalk.com/uploads/${contact.profile_picture}`}
             alt={contact.name}
           />
         ) : (

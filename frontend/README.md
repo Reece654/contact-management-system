@@ -1,16 +1,23 @@
-# React + Vite
+Contact managment system
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A passcode protected contact manager built for yoobee 204B Cloud Application Devlopment. Add view, edit and delte contacts with a name, email, phone address and profile picture
 
-Currently, two official plugins are available:
+Stack
+Frontend - React (Vite), React Router hosted as a static site on S3
+Backend - Python Flask REST API hosted on Elastic Beanstalk
+Database - MySQL on RDS
+Passcode is hashed with Werkzeug and verified server side
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Running locally
 
-## React Compiler
+Backend:
+    cd backend
+    pip install -r requirements.txt
+    python app.py
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Create `backend/.env` with DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Frontend:
+    cd frontend
+    npm install
+    npm run dev

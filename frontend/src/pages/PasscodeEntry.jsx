@@ -14,7 +14,7 @@ function PasscodeEntry() {
     setError("");
 
     // sends the passcode to the verify the route and waits for a response
-    const response = await fetch("http://127.0.0.1:5000/api/auth/verify", {
+    const response = await fetch("http://contact-management-backend-env.eba-3desc6qg.ap-southeast-6.elasticbeanstalk.com/api/auth/verify", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ passcode }),

@@ -27,7 +27,7 @@ function EditContact() {
 
   // gets the current details of the contact to pre fill the form
   useEffect(() => {
-    fetch(`http://127.0.0.1:5000/api/contacts/${id}`)
+    fetch(`http://contact-management-backend-env.eba-3desc6qg.ap-southeast-6.elasticbeanstalk.com/api/contacts/${id}`)
       // gets the response from the backend and turns it to json
       // inserts the current details into the form
       .then((res) => res.json())
@@ -46,7 +46,7 @@ function EditContact() {
     e.preventDefault();
     setError("");
 
-    const response = await fetch(`http://127.0.0.1:5000/api/contacts/${id}`, {
+    const response = await fetch(`http://contact-management-backend-env.eba-3desc6qg.ap-southeast-6.elasticbeanstalk.com/api/contacts/${id}`, {
       // uses put method to update the contact details in the backend
       method: "PUT",
       // makes the content type json 
@@ -76,7 +76,7 @@ function EditContact() {
         {profilePicture ? (
           <img
             className="detail-profile-pic"
-            src={`http://127.0.0.1:5000/uploads/${profilePicture}`}
+            src={`http://contact-management-backend-env.eba-3desc6qg.ap-southeast-6.elasticbeanstalk.com/uploads/${profilePicture}`}
             alt={name}
           />
         ) : (

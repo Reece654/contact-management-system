@@ -33,7 +33,7 @@ function AddContact() {
     }
 
     //sens the form data to the backend to create a new contact
-    const response = await fetch("http://127.0.0.1:5000/api/contacts", {
+    const response = await fetch("http://contact-management-backend-env.eba-3desc6qg.ap-southeast-6.elasticbeanstalk.com/api/contacts", {
       // POST is used to create the new contact
       method: "POST",
       body: formData,

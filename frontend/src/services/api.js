@@ -3,7 +3,8 @@
 import axios from 'axios';
 
 // this is the flask servers address
-const API_BASE = 'http://127.0.0.1:5000/api';
+// changed to live elestic beanstalk server address for frontenddeployment
+const API_BASE = 'http://contact-management-backend-env.eba-3desc6qg.ap-southeast-6.elasticbeanstalk.com/api';
 
 // used on the passcode entry page to check if the passcode is right
 export const verifyPasscode = (passcode) =>

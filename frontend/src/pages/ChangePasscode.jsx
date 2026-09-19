@@ -22,7 +22,7 @@ function ChangePasscode() {
 
     // sends the old and new passcode as json file to the backend to confirm the old passcode is correct
     // then changes it to the new one
-    const response = await fetch("http://127.0.0.1:5000/api/auth/change", {
+    const response = await fetch("http://contact-management-backend-env.eba-3desc6qg.ap-southeast-6.elasticbeanstalk.com/api/auth/change", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({currentPasscode: oldPasscode, newPasscode }),
